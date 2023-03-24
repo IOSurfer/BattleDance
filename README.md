@@ -1,6 +1,7 @@
 # Battle Dance #
 ## 基本介绍 ##
-Battle Dance（战舞）是个人开发的一款基于物理模拟的 2D 格斗类游戏，通过跨平台的开源游戏框架 LibGDX 进行开发，通过其封装好的物理引擎 Box2D 的 JNI 接口进行游戏的物理模拟。代码分为安卓端和核心端，安卓端负责实现游戏的界面，核心端负责实现游戏的主要逻辑功能。
+Battle Dance（战舞）是个人开发的一款基于物理模拟的 2D 格斗类游戏，通过跨平台的开源游戏框架 LibGDX 进行开发，通过其封装好的物理引擎 Box2D 的 JNI 接口进行游戏的物理模拟。代码分为安卓端和核心端，安卓端负责实现游戏的界面，核心端负责实现游戏的主要逻辑功能。  
+![](https://github.com/IOSurfer/BattleDance/blob/main/imgs/%E6%BC%94%E7%A4%BA.gif) 
 ## 环境依赖 ##
 Java 15.0.1  
 Gradle 7.3.3  
@@ -20,8 +21,6 @@ LibGDX 1.10.0
 	├─core 核心代码                
 	│                      
 	└─gradle gradle包装器 
-
-
 ### 功能模块 ###
 主活动模块的生命周期和应用的生命周期重叠，模块是 LibGDX 指定的程序入口，在这个模块中，我们进行界面的更换，该模块下辖三个界面，分别是游戏界面、关卡管理界面和开始界面。  
 开始界面主要提供音乐服务支持，其子模块音乐服务模块会通过 Intent 启动 Service 来为游戏全程播放背景音乐。  
@@ -29,8 +28,10 @@ LibGDX 1.10.0
 在游戏界面中，进行游戏主模块初始化，进行游戏内容的显示，游戏主模块通过通信模块实现核心端代码与安卓端代码的通信，通过姿态检测模块检测用户的输入手势，通过物理引擎进行物理模拟，最后通过渲染模块将游戏画面绘制到屏幕上。  
 ![](https://github.com/IOSurfer/BattleDance/blob/main/imgs/%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97%E5%9B%BE.png)  
 ### 业务逻辑 ###
-在应用开始后，开启音乐服务，进入开始界面，通过点击退出按钮退出应用，点击开始按钮进入关卡选择界面。在关卡选择界面中，通过点击返回按钮返回开始界面，点击已解锁的关卡进入对应关卡的游戏界面。在游戏界面中，用户拖动手指控制小人行动，与敌人进行对战，其间，可以点击返回按钮返回关卡选择界面，等到一方死亡，则会显示提示信息。
+在应用开始后，开启音乐服务，进入开始界面，通过点击退出按钮退出应用，点击开始按钮进入关卡选择界面。在关卡选择界面中，通过点击返回按钮返回开始界面，点击已解锁的关卡进入对应关卡的游戏界面。在游戏界面中，用户拖动手指控制小人行动，与敌人进行对战，其间，可以点击返回按钮返回关卡选择界面，等到一方死亡，则会显示提示信息。  
+![](https://github.com/IOSurfer/BattleDance/blob/main/imgs/%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E5%9B%BE.png) 
 ### 代码实现 ###
+![](https://github.com/IOSurfer/BattleDance/blob/main/imgs/%E4%BB%A3%E7%A0%81%E6%9E%B6%E6%9E%84.png) 
 #### 主活动 ####
 主活动为 AndroidLauncher 类继承 LibGDX 给定的入口类 FragmentActivity ，并实现接口类 AndroidFragmentApplication.Callbacks 来支持 Fragment 的显示和替换。  
 在主活动中我们将动态隐藏顶部状态栏和底部栏，同时隐藏应用标题，我们需要通过 getWindow 函数获取当前的窗口，通过窗口的getAttributes方法获取布局参数，将参数的成员 systemUiVisibility 设为` View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |View.SYSTEM_UI_FLAG_IMMERSIVE`  
@@ -52,8 +53,8 @@ LevelAdapter 是对应的适配器，继承自 RecyclerView.Adapter<LevelAdapter
 在核心代码端，提供名为 ActionResovler 的接口，提供抽象方法 changeFragment ，在安卓代码端，类 AndroidActionResovler 实例化接口，包含一个 FragmentActivity 类的成员和一个 MyGdxGame 类的成员，借此完成两者通信，重载 changeFragment 方法，使得核心代码运行时可以进行 Fragment 的取代。
 #### 游戏主模块 ####
 游戏主模块由类 MyGdxGame 类提供，继承了 LibGDX 提供的 ApplicationAdapter 类，其成员分为四类，一类是游戏中所用的 Music 和 Texture 资源,一类是游戏的状态信息，还有渲染所用的 Renderer，OrthographicCamera，SpriteBatch 以及游戏中设计的实体对象 World，Man，Enemy。  
-其生命周期如图所示，在 create 阶段，对所有资源初始化，在 dispose 阶段，释放所用资源，在 render 阶段对对象进行更新，并渲染游戏画面。  
-**可控对象结构图  **
+其生命周期如图所示，在 create 阶段，对所有资源初始化，在 dispose 阶段，释放所用资源，在 render 阶段对对象进行更新，并渲染游戏画面。    
+![](https://github.com/IOSurfer/BattleDance/blob/main/imgs/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png)  
 #### 渲染 ####
 我们将渲染分为四个部分，分别是背景，前景，UI,控制器。通过调用 render 方法完成渲染。
 背景渲染器 BackgroundRenderer 类， render 方法负责将画面以黑色填充，使用了 LibGDX 的 ScreenUtils.clear 方法。  
@@ -64,9 +65,10 @@ UI 渲染器 UiRenderer 负责渲染 UI 视图， render 方法绘制胜利/失�
 #### 手臂控制与控制器 ####
 控制器分左右手，其中大圆代表了人物手臂的活动范围，小圆代表了将前臂外端控制锚点移动到的位置，大圆圆心位置由初次触碰屏幕的位置决定，通过拖动手指，将小圆移动到大圆边界，大圆的也会随着小圆同步运动。当手指离开屏幕是，对应的控制器也会随之消失  
 以左手为例，通过人物实时姿态和控制器状态，可以得到两对方向向量 v1(X01-X00,X01-Y00)，v2(X21-X20,Y21-X20) ,将两对向量归一化后作差，就得到了手臂运动的方向向量，使用 Box2D 提供的 Body 类的 applyForce 方法，将一个沿着该方向的力作用于手臂外端的控制锚点，就实现了手臂控制的效果。  
-控制器的绘制由 ControllerRender 执行，而手臂挥舞则为 Man 的 public void wave(Vector2 v, Vector2 a, boolean side) 方法。    
-**控制器姿态图**  
-**手臂姿态图**
+控制器的绘制由 ControllerRender 执行，而手臂挥舞则为 Man 的 public void wave(Vector2 v, Vector2 a, boolean side) 方法。      
+![](https://github.com/IOSurfer/BattleDance/blob/main/imgs/%E4%BA%BA%E7%89%A9%E7%BB%93%E6%9E%84%E5%9B%BE.png)    
+![](https://github.com/IOSurfer/BattleDance/blob/main/imgs/%E4%BA%BA%E7%89%A9%E5%A7%BF%E5%8A%BF.png)    
+![](https://github.com/IOSurfer/BattleDance/blob/main/imgs/%E6%8E%A7%E5%88%B6%E5%99%A8%E8%AE%BE%E7%BD%AE.png)    
 #### 手指姿态检测 ####
 MyGestureListener 类实例化了 LibGDX 提供的 GestureDetector.GestureListener 接口，其对底层的传感器接口进行了封装，通过重载GestureListner下的各个方法来实 touchDown (触碰)，tap （点按），longPress （长按），fling （滑动），pan （拖动），zoom （放缩），pinch （双指拖动）等姿态的检测。  
 我们根据当前的手势确定人物的行为，通过 MyGdxGame 的方法 setWave ，setStand 更新状态，并将手指在屏幕上的坐标传回 MyGdxGame 。对于左半屏的点按，只设置左半屏点按坐标的值，右半亦复如是。  
