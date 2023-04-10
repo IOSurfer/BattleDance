@@ -1,10 +1,9 @@
 sourceCompatibility = 1.7
-<<<<<<< HEAD
+
 dependencies {
     implementation 'junit:junit:4.12'
 }
-=======
->>>>>>> b50900bba7df72d1f06775f60de4f9166dc714f0
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
